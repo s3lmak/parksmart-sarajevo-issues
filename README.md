@@ -70,13 +70,100 @@ A search input that allows users to type a location or address in Sarajevo and v
 
 ---
 
+## Selma's Features
+
+### F1 – Parking List & Filtering
+
+A structured list view of all parking locations, showing each lot's name, zone, price per hour, and current availability status. Users can filter the list by availability status, zone, and maximum hourly price, and sort results by availability or price. This view complements the map for users who prefer a text-based overview.
+
+**User Story:**
+As a driver, I want to filter and sort parking lots by availability and price so that I can quickly narrow down my options before deciding where to go.
+
+**Acceptance Criteria:**
+- List displays all parking lots with: name, zone, price per hour, available spots, and status badge
+- Filter options: availability status (available / limited / full), zone, maximum price per hour
+- Sort options: most available first, price low to high
+- Multiple filters can be combined simultaneously (e.g. zone + max price)
+- Empty state message is shown when no results match the active filters
+- List data is consistent with the map view and reflects real-time availability
+
+---
+
+### F2 – Real-time Parking Map
+
+An interactive map of Sarajevo displaying all parking locations as color-coded markers. Marker color reflects current availability: green for available, yellow for limited, and red for full. The map refreshes automatically every 60 seconds without a full page reload. Clicking a marker opens a popup with a short summary and a link to the full parking detail page.
+
+**User Story:**
+As a driver, I want to see all parking locations on a live map so that I can immediately identify where free spots are near my destination.
+
+**Acceptance Criteria:**
+- Map loads and displays all parking locations as markers on initial page load
+- Marker color reflects real-time availability: green (available), yellow (limited), red (full)
+- Clicking a marker shows a popup with: parking name, number of available spots, and a "View Details" link
+- Map data refreshes every 60 seconds automatically, without user action
+- Map is responsive and usable on mobile screen sizes
+
+---
+
+### F3 – Parking Detail Page
+
+A dedicated page for each individual parking location showing complete information: name, address, total capacity, current available spots, price per hour, working hours, and an embedded mini-map with the exact location. A "Get Directions" button opens Google Maps navigation to that location. Availability is refreshed every 60 seconds.
+
+**User Story:**
+As a driver, I want to see full details about a specific parking lot so that I can confirm it suits my needs before driving there.
+
+**Acceptance Criteria:**
+- Page displays: name, address, zone, total capacity, current available spots, price per hour, working hours
+- Embedded mini-map showing the parking lot's exact location
+- "Get Directions" button opens Google Maps with that location as the destination
+- Available spots count refreshes every 60 seconds automatically
+- Back button or breadcrumb returns the user to the previous view (list or map)
+- Page is accessible via a direct URL: `/parking/:id`
+
+---
+
+
 ## Site Map
 
 <img width="468" height="313" alt="Zerina's site map" src="https://github.com/user-attachments/assets/e1f344db-a9a7-4f7f-a5b2-dfe9380030e3" />
 
+### Selma's features
+<img width="921" height="496" alt="Slika zaslona 2026-04-09 u 16 52 02" src="https://github.com/user-attachments/assets/0d9015c7-7662-4724-b25a-4c0412d63495" />
+
+
+### Combined navigation
+\```
+ParkSmart Sarajevo
+│
+├── Home / Map View (/)                    ← Selma F2
+│   └── Marker Popup (on click)
+│       └── → Parking Detail Page
+│
+├── Parking List (/list)                   ← Selma F1
+│   ├── Filter Panel (zone, price, status)
+│   └── → Parking Detail Page
+│
+├── Parking Detail (/parking/:id)          ← Selma F3
+│   └── → Google Maps (external)
+│
+├── Search (/search)                       ← Zerina F3
+│   └── Autocomplete suggestions
+│
+├── Login (/login)                         ← Zerina F1
+├── Register (/register)                   ← Zerina F1
+│   └── → Redirect to /
+│
+└── Saved Parkings (/favourites)           ← Zerina F2
+    ├── → Parking Detail (/parking/:id)
+    └── requires login → /login
+\```
+
+
 ## Mockups
 
 <img width="468" height="283" alt="Zerina's mockup" src="https://github.com/user-attachments/assets/f731601f-8e3c-47de-bd00-38dc1c9074fc" />
+<img width="468" height="315" alt="Selma Mockup" src="https://github.com/user-attachments/assets/c6c84af5-1271-4322-8816-dec29454c5c3" />
+
 
 ## API Documentation
 ### Zerina's API endpoints
@@ -90,3 +177,95 @@ A search input that allows users to type a location or address in Sarajevo and v
 | DELETE | `/users/:userId/favourites/:parkingId` | F2 | Remove from favourites |
 | GET | `/parkings/search?lat=&lng=&radius=` | F3 | Search by location/radius |
 | GET | `/locations/autocomplete?q=` | F3 | Autocomplete suggestions |
+
+
+## Selma's endpoints
+
+All endpoints return JSON. Base URL: `http://localhost:8080/api/v1`
+
+### F1 – Parking List & Filtering
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/parkings` | Fetch all parking lots |
+| GET | `/parkings?zone=&status=&max_price=&sort=` | Fetch filtered and sorted list |
+
+**Request parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `zone` | string | No | Filter by zone name |
+| `status` | string | No | `available`, `limited`, or `full` |
+| `max_price` | number | No | Maximum price per hour in KM |
+| `sort` | string | No | `available_desc` or `price_asc` |
+
+**Response:**
+```json
+[
+  {
+    "id": "p01",
+    "name": "Parking Skenderija",
+    "zone": "Zone 1",
+    "total_capacity": 80,
+    "available_spots": 32,
+    "status": "available",
+    "price_per_hour": 1.50
+  }
+]
+```
+
+---
+
+### F2 – Real-time Parking Map
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/parkings` | Fetch all parking locations with coordinates |
+
+**Response:**
+```json
+[
+  {
+    "id": "p01",
+    "name": "Parking Skenderija",
+    "latitude": 43.8563,
+    "longitude": 18.4131,
+    "status": "available",
+    "available_spots": 32
+  }
+]
+```
+
+---
+
+### F3 – Parking Detail Page
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/parkings/:id` | Fetch full details for one parking lot |
+
+**Response:**
+```json
+{
+  "id": "p01",
+  "name": "Parking Skenderija",
+  "address": "Ulica Skenderija 1",
+  "latitude": 43.8563,
+  "longitude": 18.4131,
+  "zone": "Zone 1",
+  "total_capacity": 80,
+  "available_spots": 32,
+  "status": "available",
+  "price_per_hour": 1.50,
+  "working_hours": "07:00–22:00",
+  "google_maps_url": "https://maps.google.com/?q=43.8563,18.4131"
+}
+```
+
+**Error response:**
+```json
+{
+  "error": "Parking not found",
+  "code": 404
+}
+```
