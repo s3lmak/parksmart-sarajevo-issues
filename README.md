@@ -132,7 +132,7 @@ As a driver, I want to see full details about a specific parking lot so that I c
 
 
 ### Combined navigation
-\```
+```
 ParkSmart Sarajevo
 │
 ├── Home / Map View (/)                    ← Selma F2
@@ -156,7 +156,7 @@ ParkSmart Sarajevo
 └── Saved Parkings (/favourites)           ← Zerina F2
     ├── → Parking Detail (/parking/:id)
     └── requires login → /login
-\```
+```
 
 
 ## Mockups
