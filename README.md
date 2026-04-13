@@ -337,8 +337,7 @@ GET /locations/autocomplete?q=Bascarsija
 
 Query Parameters
 
-Parameter	Description
-q	        Partial address or landmark name (min 2 characters)
+
 <img width="468" height="79" alt="image" src="https://github.com/user-attachments/assets/79df8137-058b-4f58-9533-98953f3e6cce" />
 
 
