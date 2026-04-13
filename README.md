@@ -348,7 +348,7 @@ Response (200 OK)
   }
 ]
 
-<img width="468" height="638" alt="image" src="https://github.com/user-attachments/assets/17e758c6-78e0-4f07-9c93-8673b2596d8f" />
+
 
 
 ## Selma's endpoints
