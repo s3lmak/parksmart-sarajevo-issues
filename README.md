@@ -308,10 +308,10 @@ Request
 GET /parkings/search?lat=43.8563&lng=18.4131&radius=500
 
 Query Parameters
-Parameter	Type	Required	Description
-lat	number	Yes	Latitude of searched location
-lng	number	Yes	Longitude of searched location
-radius	integer	No	Search radius in metres (default: 500)
+
+
+<img width="468" height="99" alt="image" src="https://github.com/user-attachments/assets/c6e0f8a6-3e8e-4c7b-a71f-d66d74ea8651" />
+
 
 Response (200 OK)
 [
@@ -336,8 +336,12 @@ Request
 GET /locations/autocomplete?q=Bascarsija
 
 Query Parameters
+
 Parameter	Description
-q	Partial address or landmark name (min 2 characters)
+q	        Partial address or landmark name (min 2 characters)
+<img width="468" height="79" alt="image" src="https://github.com/user-attachments/assets/79df8137-058b-4f58-9533-98953f3e6cce" />
+
+
 
 Response (200 OK)
 [
